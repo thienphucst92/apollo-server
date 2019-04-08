@@ -457,12 +457,12 @@ export function testApolloServer<AS extends ApolloServerBase>(
         const { url: uri } = await createApolloServer({
           typeDefs: gql`
             type Query {
-              error: String
+              fieldWhichWillError: String
             }
           `,
           resolvers: {
             Query: {
-              error: () => {
+              fieldWhichWillError: () => {
                 return throwError();
               },
             },
@@ -475,9 +475,9 @@ export function testApolloServer<AS extends ApolloServerBase>(
         const apolloFetch = createApolloFetch({ uri });
 
         const result = await apolloFetch({
-          query: '{error}',
+          query: '{fieldWhichWillError}',
         });
-        expect(result.data).toEqual({ error: null });
+        expect(result.data).toEqual({ fieldWhichWillError: null });
         expect(result.errors).toBeDefined();
         expect(result.errors[0].extensions.code).toEqual('BAD_USER_INPUT');
         expect(result.errors[0].message).toEqual('User Input Error');
@@ -631,12 +631,12 @@ export function testApolloServer<AS extends ApolloServerBase>(
           const { url: uri } = await createApolloServer({
             typeDefs: gql`
               type Query {
-                error: String
+                fieldWhichWillError: String
               }
             `,
             resolvers: {
               Query: {
-                error: () => {
+                fieldWhichWillError: () => {
                   throwError();
                 },
               },
@@ -660,10 +660,10 @@ export function testApolloServer<AS extends ApolloServerBase>(
           const apolloFetch = createApolloFetch({ uri });
 
           const result = await apolloFetch({
-            query: `{error}`,
+            query: `{fieldWhichWillError}`,
           });
           expect(result.data).toEqual({
-            error: null,
+            fieldWhichWillError: null,
           });
           expect(result.errors).toBeDefined();
           expect(result.errors[0].message).toEqual('masked');
@@ -716,12 +716,12 @@ export function testApolloServer<AS extends ApolloServerBase>(
         const { url: uri } = await createApolloServer({
           typeDefs: gql`
             type Query {
-              error: String
+              fieldWhichWillError: String
             }
           `,
           resolvers: {
             Query: {
-              error: () => {},
+              fieldWhichWillError: () => {},
             },
           },
           extensions: [() => new Extension()],
@@ -732,7 +732,7 @@ export function testApolloServer<AS extends ApolloServerBase>(
         const apolloFetch = createApolloFetch({ uri });
 
         const result = await apolloFetch({
-          query: `{error}`,
+          query: `{fieldWhichWillError}`,
         });
         expect(result.data).toBeUndefined();
         expect(result.errors).toBeDefined();
@@ -937,12 +937,12 @@ export function testApolloServer<AS extends ApolloServerBase>(
         const { url: uri } = await createApolloServer({
           typeDefs: gql`
             type Query {
-              error: String
+              fieldWhichWillError: String
             }
           `,
           resolvers: {
             Query: {
-              error: () => {
+              fieldWhichWillError: () => {
                 throw new AuthenticationError('we the best music');
               },
             },
@@ -951,9 +951,9 @@ export function testApolloServer<AS extends ApolloServerBase>(
 
         const apolloFetch = createApolloFetch({ uri });
 
-        const result = await apolloFetch({ query: `{error}` });
+        const result = await apolloFetch({ query: `{fieldWhichWillError}` });
         expect(result.data).toBeDefined();
-        expect(result.data).toEqual({ error: null });
+        expect(result.data).toEqual({ fieldWhichWillError: null });
 
         expect(result.errors).toBeDefined();
         expect(result.errors.length).toEqual(1);
@@ -970,12 +970,12 @@ export function testApolloServer<AS extends ApolloServerBase>(
         const { url: uri } = await createApolloServer({
           typeDefs: gql`
             type Query {
-              error: String!
+              fieldWhichWillError: String!
             }
           `,
           resolvers: {
             Query: {
-              error: () => {
+              fieldWhichWillError: () => {
                 throw new AuthenticationError('we the best music');
               },
             },
@@ -984,7 +984,7 @@ export function testApolloServer<AS extends ApolloServerBase>(
 
         const apolloFetch = createApolloFetch({ uri });
 
-        const result = await apolloFetch({ query: `{error}` });
+        const result = await apolloFetch({ query: `{fieldWhichWillError}` });
         expect(result.data).toBeNull();
 
         expect(result.errors).toBeDefined();
